@@ -9,133 +9,283 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #0f172a;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #16161f;
+            --border: #2a2a38;
+            --border-light: #3a3a4a;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-glow: rgba(59, 130, 246, 0.15);
             --accent: #06b6d4;
             --success: #10b981;
-            --dark: #0f172a;
-            --darker: #020617;
-            --light: #ffffff;
-            --gray: #64748b;
-            --gray-light: #f1f5f9;
-            --gradient: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
+            --warning: #f59e0b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --gradient: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
         }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--light); color: var(--secondary); overflow-x: hidden; line-height: 1.6; }
-        nav { position: fixed; top: 0; width: 100%; padding: 20px 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid rgba(0, 0, 0, 0.05); transition: all 0.3s ease; }
-        nav.scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); }
-        nav .container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg-primary); 
+            color: var(--text-primary); 
+            overflow-x: hidden; 
+            line-height: 1.6;
+        }
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 20px 0; 
+            background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(20px); 
+            z-index: 1000; border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease; 
+        }
+        nav.scrolled { box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
+        nav .container { 
+            display: flex; justify-content: space-between; align-items: center; 
+            max-width: 1200px; margin: 0 auto; padding: 0 20px; 
+        }
+        .logo { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; }
+        .logo span { color: var(--primary); }
         .nav-links { display: flex; gap: 40px; list-style: none; }
-        .nav-links a { color: var(--secondary); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s; position: relative; }
-        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--primary); transition: width 0.3s; }
-        .nav-links a:hover { color: var(--primary); }
+        .nav-links a { 
+            color: var(--text-secondary); text-decoration: none; font-weight: 500; 
+            font-size: 0.95rem; transition: color 0.3s; position: relative; 
+        }
+        .nav-links a::after { 
+            content: ''; position: absolute; bottom: -5px; left: 0; 
+            width: 0; height: 2px; background: var(--primary); transition: width 0.3s; 
+        }
+        .nav-links a:hover { color: var(--text-primary); }
         .nav-links a:hover::after { width: 100%; }
-        .hero { min-height: 100vh; display: flex; align-items: center; padding: 120px 20px 80px; background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%); position: relative; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; top: -50%; right: -20%; width: 800px; height: 800px; background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, transparent 70%); border-radius: 50%; }
-        .hero-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .hero { 
+            min-height: 100vh; display: flex; align-items: center; padding: 120px 20px 80px; 
+            background: radial-gradient(ellipse at top right, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at bottom left, rgba(6, 182, 212, 0.05) 0%, transparent 50%),
+                        var(--bg-primary);
+            position: relative; overflow: hidden; 
+        }
+        .hero-container { 
+            max-width: 1200px; margin: 0 auto; display: grid; 
+            grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; 
+        }
         .hero-content { z-index: 1; }
-        .badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; background: rgba(37, 99, 235, 0.1); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: 50px; color: var(--primary); font-weight: 600; font-size: 0.9rem; margin-bottom: 24px; animation: fadeInUp 0.8s ease; }
-        .hero h1 { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; color: var(--secondary); animation: fadeInUp 0.8s ease 0.1s both; }
-        .hero h1 span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .hero p { font-size: 1.25rem; color: var(--gray); margin-bottom: 32px; line-height: 1.7; animation: fadeInUp 0.8s ease 0.2s both; }
-        .cta-buttons { display: flex; gap: 16px; animation: fadeInUp 0.8s ease 0.3s both; }
-        .btn { padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px; border: none; cursor: pointer; }
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
-        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); }
-        .btn-secondary { background: transparent; color: var(--secondary); border: 2px solid rgba(0, 0, 0, 0.1); }
-        .btn-secondary:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
-        .hero-image { position: relative; z-index: 1; animation: fadeIn 1s ease 0.4s both; }
-        .hero-image img { width: 100%; border-radius: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); }
-        .stats { padding: 80px 20px; background: white; }
+        .badge { 
+            display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; 
+            background: var(--primary-glow); border: 1px solid rgba(59, 130, 246, 0.3); 
+            border-radius: 50px; color: var(--primary); font-weight: 600; 
+            font-size: 0.9rem; margin-bottom: 24px; 
+        }
+        .hero h1 { 
+            font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; 
+            line-height: 1.1; margin-bottom: 20px; color: var(--text-primary); 
+        }
+        .hero h1 span { 
+            background: var(--gradient); -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; background-clip: text; 
+        }
+        .hero p { 
+            font-size: 1.25rem; color: var(--text-secondary); 
+            margin-bottom: 32px; line-height: 1.7; 
+        }
+        .cta-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn { 
+            padding: 14px 32px; border-radius: 8px; text-decoration: none; 
+            font-weight: 600; font-size: 1rem; transition: all 0.3s; 
+            display: inline-flex; align-items: center; gap: 10px; 
+            border: none; cursor: pointer; 
+        }
+        .btn-primary { 
+            background: var(--primary); color: white; 
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4); 
+        }
+        .btn-primary:hover { 
+            background: var(--primary-dark); transform: translateY(-2px); 
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.5); 
+        }
+        .btn-secondary { 
+            background: transparent; color: var(--text-primary); 
+            border: 1px solid var(--border-light); 
+        }
+        .btn-secondary:hover { 
+            border-color: var(--primary); background: var(--primary-glow);
+            transform: translateY(-2px); 
+        }
+        .hero-image { position: relative; z-index: 1; }
+        .hero-image img { 
+            width: 100%; border-radius: 20px; 
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+        }
+        .stats { padding: 80px 20px; background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
         .stats-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
         .stat-card { text-align: center; padding: 30px; }
-        .stat-number { font-size: 3rem; font-weight: 800; color: var(--primary); display: block; margin-bottom: 8px; font-family: 'IBM Plex Mono', monospace; }
-        .stat-label { color: var(--gray); font-size: 0.95rem; font-weight: 500; }
+        .stat-number { 
+            font-size: 3rem; font-weight: 800; color: var(--primary); 
+            display: block; margin-bottom: 8px; font-family: 'IBM Plex Mono', monospace; 
+        }
+        .stat-label { color: var(--text-secondary); font-size: 0.95rem; font-weight: 500; }
         .section-header { text-align: center; margin-bottom: 60px; }
-        .section-header h2 { font-size: clamp(2rem, 3vw, 2.5rem); margin-bottom: 16px; font-weight: 800; color: var(--secondary); }
-        .section-header p { color: var(--gray); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
-        .why-choose { padding: 100px 20px; background: var(--gray-light); }
-        .features-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
-        .feature-card { background: white; border-radius: 16px; padding: 40px; transition: all 0.3s; border: 1px solid rgba(0, 0, 0, 0.05); }
-        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); }
-        .feature-icon { width: 60px; height: 60px; background: var(--gradient); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 24px; color: white; }
-        .feature-card h3 { font-size: 1.3rem; margin-bottom: 12px; font-weight: 700; color: var(--secondary); }
-        .feature-card p { color: var(--gray); line-height: 1.7; margin-bottom: 20px; }
+        .section-header h2 { font-size: clamp(2rem, 3vw, 2.5rem); margin-bottom: 16px; font-weight: 800; color: var(--text-primary); }
+        .section-header p { color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+        .why-choose { padding: 100px 20px; background: var(--bg-primary); }
+        .features-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .feature-card { 
+            background: var(--bg-card); border-radius: 16px; padding: 36px; 
+            transition: all 0.3s; border: 1px solid var(--border);
+        }
+        .feature-card:hover { 
+            transform: translateY(-5px); border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .feature-icon { 
+            width: 56px; height: 56px; background: var(--primary-glow); 
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px; display: flex; align-items: center; 
+            justify-content: center; font-size: 1.4rem; margin-bottom: 24px; color: var(--primary);
+        }
+        .feature-card h3 { font-size: 1.25rem; margin-bottom: 12px; font-weight: 700; color: var(--text-primary); }
+        .feature-card p { color: var(--text-secondary); line-height: 1.7; margin-bottom: 20px; font-size: 0.95rem; }
         .feature-list { list-style: none; }
-        .feature-list li { padding: 6px 0; color: var(--secondary); display: flex; align-items: center; gap: 10px; font-size: 0.95rem; }
-        .feature-list li::before { content: '✓'; width: 20px; height: 20px; background: rgba(16, 185, 129, 0.15); color: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; font-weight: 700; }
-        .services { padding: 100px 20px; background: white; }
-        .services-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
-        .service-card { background: white; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px; padding: 40px; transition: all 0.3s; }
-        .service-card:hover { border-color: var(--primary); box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1); transform: translateY(-5px); }
-        .service-icon { width: 60px; height: 60px; background: rgba(37, 99, 235, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 24px; color: var(--primary); }
-        .service-card h3 { font-size: 1.3rem; margin-bottom: 12px; font-weight: 700; }
-        .service-card p { color: var(--gray); margin-bottom: 20px; line-height: 1.7; }
+        .feature-list li { 
+            padding: 6px 0; color: var(--text-secondary); display: flex; 
+            align-items: center; gap: 10px; font-size: 0.9rem; 
+        }
+        .feature-list li::before { 
+            content: '✓'; width: 20px; height: 20px; background: rgba(16, 185, 129, 0.15); 
+            color: var(--success); border-radius: 50%; display: flex; 
+            align-items: center; justify-content: center; font-size: 0.7rem; 
+            flex-shrink: 0; font-weight: 700; 
+        }
+        .services { padding: 100px 20px; background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .services-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .service-card { 
+            background: var(--bg-card); border: 1px solid var(--border); 
+            border-radius: 16px; padding: 36px; transition: all 0.3s; 
+        }
+        .service-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .service-icon { 
+            width: 56px; height: 56px; background: var(--primary-glow); 
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px; display: flex; align-items: center; 
+            justify-content: center; font-size: 1.4rem; margin-bottom: 24px; color: var(--primary);
+        }
+        .service-card h3 { font-size: 1.25rem; margin-bottom: 12px; font-weight: 700; color: var(--text-primary); }
+        .service-card p { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.7; font-size: 0.95rem; }
         .service-features { list-style: none; }
-        .service-features li { padding: 8px 0; color: var(--secondary); display: flex; align-items: center; gap: 10px; font-size: 0.95rem; }
+        .service-features li { 
+            padding: 8px 0; color: var(--text-secondary); display: flex; 
+            align-items: center; gap: 10px; font-size: 0.9rem; 
+        }
         .service-features li::before { content: '→'; color: var(--primary); font-weight: 700; }
-        .projects { padding: 100px 20px; background: var(--gray-light); }
-        .projects-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 30px; }
-        .project-card { background: white; border-radius: 16px; overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.05); transition: all 0.3s; cursor: pointer; }
-        .project-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); }
-        .project-image { height: 240px; background: var(--gradient); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .projects { padding: 100px 20px; background: var(--bg-primary); }
+        .projects-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px; }
+        .project-card { 
+            background: var(--bg-card); border-radius: 16px; overflow: hidden; 
+            border: 1px solid var(--border); transition: all 0.3s; 
+        }
+        .project-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .project-image { height: 220px; position: relative; overflow: hidden; }
         .project-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
         .project-card:hover .project-image img { transform: scale(1.05); }
-        .project-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(37, 99, 235, 0.9); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
-        .project-card:hover .project-overlay { opacity: 1; }
-        .project-overlay i { color: white; font-size: 2.5rem; }
-        .project-content { padding: 30px; }
-        .project-content h3 { font-size: 1.3rem; margin-bottom: 12px; font-weight: 700; }
-        .project-content p { color: var(--gray); margin-bottom: 20px; line-height: 1.6; }
-        .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-        .tag { padding: 6px 14px; background: rgba(37, 99, 235, 0.1); border-radius: 6px; font-size: 0.85rem; color: var(--primary); font-weight: 600; font-family: 'IBM Plex Mono', monospace; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 2000; overflow-y: auto; backdrop-filter: blur(5px); }
-        .modal-content { max-width: 900px; margin: 50px auto; background: white; border-radius: 20px; overflow: hidden; animation: modalSlide 0.4s ease; }
-        @keyframes modalSlide { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-        .modal-header { background: var(--gradient); padding: 40px; color: white; position: relative; }
-        .modal-close { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 50%; color: white; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
-        .modal-close:hover { background: rgba(255, 255, 255, 0.3); transform: rotate(90deg); }
-        .modal-header h2 { font-size: 1.8rem; margin-bottom: 8px; }
-        .modal-header p { opacity: 0.9; }
-        .modal-body { padding: 40px; }
-        .modal-section { margin-bottom: 30px; }
-        .modal-section h4 { font-size: 1.1rem; margin-bottom: 12px; color: var(--primary); display: flex; align-items: center; gap: 10px; font-weight: 700; }
-        .modal-section p, .modal-section li { color: var(--gray); line-height: 1.8; font-size: 0.95rem; }
-        .modal-section ul { list-style: none; padding-left: 0; }
-        .modal-section li { padding: 6px 0; padding-left: 24px; position: relative; }
-        .modal-section li::before { content: '▸'; position: absolute; left: 0; color: var(--primary); font-weight: 700; }
-        .problem { background: rgba(245, 158, 11, 0.08); border-left: 4px solid #f59e0b; padding: 24px; border-radius: 8px; }
-        .solution { background: rgba(16, 185, 129, 0.08); border-left: 4px solid var(--success); padding: 24px; border-radius: 8px; }
-        .result { background: rgba(37, 99, 235, 0.08); border-left: 4px solid var(--primary); padding: 24px; border-radius: 8px; }
-        .process { padding: 100px 20px; background: white; }
+        .project-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: linear-gradient(to bottom, transparent 0%, rgba(10, 10, 15, 0.95) 100%);
+            display: flex; align-items: flex-end; padding: 20px;
+        }
+        .view-details { 
+            color: var(--primary); font-weight: 600; font-size: 0.9rem;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .project-content { padding: 28px; }
+        .project-content h3 { font-size: 1.25rem; margin-bottom: 10px; font-weight: 700; color: var(--text-primary); }
+        .project-content > p { color: var(--text-secondary); margin-bottom: 18px; line-height: 1.6; font-size: 0.95rem; }
+        .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .tag { 
+            padding: 5px 12px; background: var(--primary-glow); 
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 6px; font-size: 0.8rem; color: var(--primary); 
+            font-weight: 600; font-family: 'IBM Plex Mono', monospace; 
+        }
+        .expand-btn {
+            width: 100%; padding: 12px; background: transparent;
+            border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text-secondary); font-weight: 600; font-size: 0.9rem;
+            cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .expand-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-glow); }
+        .expand-btn i { transition: transform 0.3s; }
+        .expand-btn.active i { transform: rotate(180deg); }
+        .project-details { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; }
+        .project-details.expanded { max-height: 2000px; }
+        .details-content { padding: 24px; border-top: 1px solid var(--border); }
+        .detail-section { margin-bottom: 24px; padding: 20px; border-radius: 10px; border-left: 3px solid; }
+        .detail-section.problem { background: rgba(245, 158, 11, 0.08); border-left-color: var(--warning); }
+        .detail-section.solution { background: rgba(16, 185, 129, 0.08); border-left-color: var(--success); }
+        .detail-section.result { background: rgba(59, 130, 246, 0.08); border-left-color: var(--primary); }
+        .detail-section h4 { font-size: 1rem; margin-bottom: 12px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .detail-section.problem h4 { color: var(--warning); }
+        .detail-section.solution h4 { color: var(--success); }
+        .detail-section.result h4 { color: var(--primary); }
+        .detail-section p { color: var(--text-secondary); line-height: 1.7; font-size: 0.9rem; margin-bottom: 12px; }
+        .detail-section ul { list-style: none; padding: 0; }
+        .detail-section li { padding: 6px 0 6px 24px; color: var(--text-secondary); position: relative; font-size: 0.9rem; line-height: 1.6; }
+        .detail-section li::before { content: '▸'; position: absolute; left: 0; color: var(--primary); font-weight: 700; }
+        .process { padding: 100px 20px; background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
         .process-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; }
         .process-step { text-align: center; padding: 30px; position: relative; }
-        .process-step:not(:last-child)::after { content: '→'; position: absolute; top: 50%; right: -15px; transform: translateY(-50%); font-size: 1.5rem; color: var(--primary); opacity: 0.4; }
-        @media (max-width: 768px) { .process-step:not(:last-child)::after { content: '↓'; right: 50%; top: 100%; transform: translateX(50%); } }
-        .step-number { width: 60px; height: 60px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 20px; color: white; }
-        .process-step h3 { font-size: 1.1rem; margin-bottom: 10px; font-weight: 700; }
-        .process-step p { color: var(--gray); font-size: 0.95rem; }
-        .contact { padding: 100px 20px; background: var(--secondary); color: white; text-align: center; }
-        .contact-box { max-width: 700px; margin: 0 auto; }
-        .contact h2 { font-size: clamp(2rem, 3vw, 2.5rem); margin-bottom: 16px; font-weight: 800; }
-        .contact p { color: rgba(255, 255, 255, 0.7); font-size: 1.1rem; margin-bottom: 32px; }
-        .email-link { display: inline-flex; align-items: center; gap: 10px; color: white; text-decoration: none; font-size: 1.1rem; font-weight: 600; padding: 16px 32px; background: rgba(255, 255, 255, 0.1); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s; }
-        .email-link:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
-        footer { padding: 30px 20px; text-align: center; background: var(--darker); color: rgba(255, 255, 255, 0.5); font-size: 0.9rem; }
+        .process-step:not(:last-child)::after { 
+            content: '→'; position: absolute; top: 50%; right: -15px; 
+            transform: translateY(-50%); font-size: 1.5rem; color: var(--primary); opacity: 0.4; 
+        }
+        @media (max-width: 768px) { 
+            .process-step:not(:last-child)::after { content: '↓'; right: 50%; top: 100%; transform: translateX(50%); } 
+        }
+        .step-number { 
+            width: 60px; height: 60px; background: var(--primary-glow); 
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50%; display: flex; align-items: center; 
+            justify-content: center; font-size: 1.5rem; font-weight: 800; 
+            margin: 0 auto 20px; color: var(--primary);
+        }
+        .process-step h3 { font-size: 1.1rem; margin-bottom: 10px; font-weight: 700; color: var(--text-primary); }
+        .process-step p { color: var(--text-secondary); font-size: 0.95rem; }
+        .contact { padding: 100px 20px; background: var(--bg-primary); }
+        .contact-box { 
+            max-width: 700px; margin: 0 auto; text-align: center;
+            padding: 60px 40px; background: var(--bg-card);
+            border: 1px solid var(--border); border-radius: 20px;
+        }
+        .contact h2 { font-size: clamp(2rem, 3vw, 2.5rem); margin-bottom: 16px; font-weight: 800; color: var(--text-primary); }
+        .contact p { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 32px; }
+        .email-link { 
+            display: inline-flex; align-items: center; gap: 10px; 
+            color: var(--text-primary); text-decoration: none; 
+            font-size: 1rem; font-weight: 600; padding: 14px 28px; 
+            background: var(--primary-glow); border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px; transition: all 0.3s; 
+        }
+        .email-link:hover { background: var(--primary); color: white; transform: translateY(-2px); border-color: var(--primary); }
+        footer { padding: 30px 20px; text-align: center; background: var(--bg-secondary); color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--border); }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .fade-in { opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
-        .mobile-menu { display: none; font-size: 1.5rem; cursor: pointer; color: var(--secondary); }
-        @media (max-width: 768px) { .hero-container { grid-template-columns: 1fr; gap: 40px; } .hero-image { order: -1; } .nav-links { display: none; } .mobile-menu { display: block; } .services-grid, .projects-grid, .features-grid { grid-template-columns: 1fr; } .cta-buttons { flex-direction: column; } .btn { width: 100%; justify-content: center; } }
+        .mobile-menu { display: none; font-size: 1.5rem; cursor: pointer; color: var(--text-primary); }
+        @media (max-width: 768px) { 
+            .hero-container { grid-template-columns: 1fr; gap: 40px; } 
+            .hero-image { order: -1; } 
+            .nav-links { display: none; } 
+            .mobile-menu { display: block; } 
+            .services-grid, .projects-grid, .features-grid { grid-template-columns: 1fr; } 
+            .cta-buttons { flex-direction: column; } 
+            .btn { width: 100%; justify-content: center; } 
+        }
     </style>
 </head>
 <body>
     <nav id="navbar">
         <div class="container">
-            <div class="logo">PG.</div>
+            <div class="logo">Priyank<span>.</span></div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#why-choose">Why Us</a></li>
@@ -146,6 +296,7 @@
             <div class="mobile-menu"><i class="fas fa-bars"></i></div>
         </div>
     </nav>
+
     <section class="hero" id="home">
         <div class="hero-container">
             <div class="hero-content">
@@ -162,6 +313,7 @@
             </div>
         </div>
     </section>
+
     <section class="stats">
         <div class="stats-grid">
             <div class="stat-card fade-in"><span class="stat-number" data-target="50">0</span><span class="stat-label">Projects Delivered</span></div>
@@ -170,51 +322,361 @@
             <div class="stat-card fade-in"><span class="stat-number" data-target="24">0</span><span class="stat-label">/7 Support</span></div>
         </div>
     </section>
+
     <section class="why-choose" id="why-choose">
-        <div class="section-header fade-in"><h2>Why Clients Choose Our Services</h2><p>We deliver results that transform businesses, not just code</p></div>
+        <div class="section-header fade-in">
+            <h2>Why Clients Choose Our Services</h2>
+            <p>We deliver results that transform businesses, not just code</p>
+        </div>
         <div class="features-grid">
-            <div class="feature-card fade-in"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Fast Delivery</h3><p>Streamlined development process ensures delivery 40% faster than industry standards.</p><ul class="feature-list"><li>Agile Methodology</li><li>Weekly Updates</li><li>Rapid Prototyping</li></ul></div>
-            <div class="feature-card fade-in"><div class="feature-icon"><i class="fas fa-bullseye"></i></div><h3>Results-Oriented</h3><p>We analyze your business needs and deliver solutions that drive growth.</p><ul class="feature-list"><li>ROI-Focused</li><li>Data-Driven</li><li>Measurable Outcomes</li></ul></div>
-            <div class="feature-card fade-in"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3>Risk-Free Guarantee</h3><p>Milestone-based payments and unlimited revisions until you're satisfied.</p><ul class="feature-list"><li>Milestone Payments</li><li>Unlimited Revisions</li><li>30-Day Support</li></ul></div>
-            <div class="feature-card fade-in"><div class="feature-icon"><i class="fas fa-handshake"></i></div><h3>Dedicated Partnership</h3><p>We're your technology partners, invested in understanding your vision.</p><ul class="feature-list"><li>Direct Communication</li><li>Long-term Support</li><li>Strategic Consultation</li></ul></div>
-            <div class="feature-card fade-in"><div class="feature-icon"><i class="fas fa-microchip"></i></div><h3>Cutting-Edge Tech</h3><p>Latest technologies and best practices for future-proof solutions.</p><ul class="feature-list"><li>Modern Stack</li><li>Cloud-Native</li><li>Security Best Practices</li></ul></div>
-            <div class="feature-card fade-in"><div class="feature-icon"><i class="fas fa-coins"></i></div><h3>Cost-Effective</h3><p>Enterprise-quality development at startup-friendly prices.</p><ul class="feature-list"><li>Transparent Pricing</li><li>No Hidden Costs</li><li>Best ROI</li></ul></div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                <h3>Fast Delivery</h3>
+                <p>Streamlined development process ensures delivery 40% faster than industry standards.</p>
+                <ul class="feature-list"><li>Agile Methodology</li><li>Weekly Updates</li><li>Rapid Prototyping</li></ul>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
+                <h3>Results-Oriented</h3>
+                <p>We analyze your business needs and deliver solutions that drive growth.</p>
+                <ul class="feature-list"><li>ROI-Focused</li><li>Data-Driven</li><li>Measurable Outcomes</li></ul>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Risk-Free Guarantee</h3>
+                <p>Milestone-based payments and unlimited revisions until you're satisfied.</p>
+                <ul class="feature-list"><li>Milestone Payments</li><li>Unlimited Revisions</li><li>30-Day Support</li></ul>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon"><i class="fas fa-handshake"></i></div>
+                <h3>Dedicated Partnership</h3>
+                <p>We're your technology partners, invested in understanding your vision.</p>
+                <ul class="feature-list"><li>Direct Communication</li><li>Long-term Support</li><li>Strategic Consultation</li></ul>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon"><i class="fas fa-microchip"></i></div>
+                <h3>Cutting-Edge Tech</h3>
+                <p>Latest technologies and best practices for future-proof solutions.</p>
+                <ul class="feature-list"><li>Modern Stack</li><li>Cloud-Native</li><li>Security Best Practices</li></ul>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon"><i class="fas fa-coins"></i></div>
+                <h3>Cost-Effective</h3>
+                <p>Enterprise-quality development at startup-friendly prices.</p>
+                <ul class="feature-list"><li>Transparent Pricing</li><li>No Hidden Costs</li><li>Best ROI</li></ul>
+            </div>
         </div>
     </section>
+
     <section class="services" id="services">
-        <div class="section-header fade-in"><h2>Our Services</h2><p>Custom solutions combining automation with beautiful applications</p></div>
+        <div class="section-header fade-in">
+            <h2>Our Services</h2>
+            <p>Custom solutions combining automation with beautiful applications</p>
+        </div>
         <div class="services-grid">
-            <div class="service-card fade-in"><div class="service-icon"><i class="fas fa-robot"></i></div><h3>Workflow Automation</h3><p>Eliminate repetitive tasks with intelligent automation.</p><ul class="service-features"><li>Lead Generation & CRM</li><li>Email & WhatsApp Automation</li><li>Data Scraping & Processing</li><li>API Integrations</li><li>Custom Python Scripts</li></ul></div>
-            <div class="service-card fade-in"><div class="service-icon"><i class="fas fa-laptop-code"></i></div><h3>Web Applications</h3><p>Fast, responsive websites that convert visitors.</p><ul class="service-features"><li>Landing Pages</li><li>E-commerce Stores</li><li>Custom Dashboards</li><li>SaaS MVP Development</li><li>WordPress & Shopify</li></ul></div>
-            <div class="service-card fade-in"><div class="service-icon"><i class="fas fa-mobile-alt"></i></div><h3>Mobile Apps</h3><p>Native and cross-platform mobile applications.</p><ul class="service-features"><li>iOS & Android</li><li>Flutter/React Native</li><li>Push Notifications</li><li>Offline Architecture</li><li>App Store Deployment</li></ul></div>
+            <div class="service-card fade-in">
+                <div class="service-icon"><i class="fas fa-robot"></i></div>
+                <h3>Workflow Automation</h3>
+                <p>Eliminate repetitive tasks with intelligent automation.</p>
+                <ul class="service-features"><li>Lead Generation & CRM</li><li>Email & WhatsApp Automation</li><li>Data Scraping & Processing</li><li>API Integrations</li><li>Custom Python Scripts</li></ul>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon"><i class="fas fa-laptop-code"></i></div>
+                <h3>Web Applications</h3>
+                <p>Fast, responsive websites that convert visitors.</p>
+                <ul class="service-features"><li>Landing Pages</li><li>E-commerce Stores</li><li>Custom Dashboards</li><li>SaaS MVP Development</li><li>WordPress & Shopify</li></ul>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+                <h3>Mobile Apps</h3>
+                <p>Native and cross-platform mobile applications.</p>
+                <ul class="service-features"><li>iOS & Android</li><li>Flutter/React Native</li><li>Push Notifications</li><li>Offline Architecture</li><li>App Store Deployment</li></ul>
+            </div>
         </div>
     </section>
+
     <section class="projects" id="projects">
-        <div class="section-header fade-in"><h2>Featured Case Studies</h2><p>Click to see detailed problem-solving approach</p></div>
+        <div class="section-header fade-in">
+            <h2>Featured Case Studies</h2>
+            <p>Click "View Details" to see the full problem-solving approach</p>
+        </div>
         <div class="projects-grid">
-            <div class="project-card fade-in" onclick="openModal('project1')"><div class="project-image"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop" alt="Lead Generation"><div class="project-overlay"><i class="fas fa-arrow-right"></i></div></div><div class="project-content"><h3>Automated Lead Generation</h3><p>LinkedIn automation saving 15 hours/week</p><div class="project-tags"><span class="tag">Python</span><span class="tag">Selenium</span><span class="tag">Make.com</span></div></div></div>
-            <div class="project-card fade-in" onclick="openModal('project2')"><div class="project-image"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop" alt="E-commerce"><div class="project-overlay"><i class="fas fa-arrow-right"></i></div></div><div class="project-content"><h3>E-commerce Automation</h3><p>Shopify with WhatsApp integration</p><div class="project-tags"><span class="tag">Shopify</span><span class="tag">WhatsApp API</span><span class="tag">Zapier</span></div></div></div>
-            <div class="project-card fade-in" onclick="openModal('project3')"><div class="project-image"><img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&auto=format&fit=crop" alt="Real Estate CRM"><div class="project-overlay"><i class="fas fa-arrow-right"></i></div></div><div class="project-content"><h3>Real Estate CRM</h3><p>40% conversion increase with automation</p><div class="project-tags"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">MongoDB</span></div></div></div>
-            <div class="project-card fade-in" onclick="openModal('project4')"><div class="project-image"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&auto=format&fit=crop" alt="Fitness App"><div class="project-overlay"><i class="fas fa-arrow-right"></i></div></div><div class="project-content"><h3>Fitness Tracking App</h3><p>Cross-platform with 10K+ downloads</p><div class="project-tags"><span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">ML Kit</span></div></div></div>
-            <div class="project-card fade-in" onclick="openModal('project5')"><div class="project-image"><img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&auto=format&fit=crop" alt="Email Platform"><div class="project-overlay"><i class="fas fa-arrow-right"></i></div></div><div class="project-content"><h3>Email Marketing Platform</h3><p>85% open rate automation</p><div class="project-tags"><span class="tag">Node.js</span><span class="tag">SendGrid</span><span class="tag">Redis</span></div></div></div>
-            <div class="project-card fade-in" onclick="openModal('project6')"><div class="project-image"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=800&auto=format&fit=crop" alt="Property Management"><div class="project-overlay"><i class="fas fa-arrow-right"></i></div></div><div class="project-content"><h3>Property Management</h3><p>Automated rent collection system</p><div class="project-tags"><span class="tag">Vue.js</span><span class="tag">Express</span><span class="tag">Stripe</span></div></div></div>
+            <div class="project-card fade-in">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop" alt="Lead Generation">
+                    <div class="project-overlay"><span class="view-details"><i class="fas fa-chart-line"></i> Lead Generation</span></div>
+                </div>
+                <div class="project-content">
+                    <h3>Automated Lead Generation</h3>
+                    <p>LinkedIn automation saving 15 hours/week for B2B consulting firm</p>
+                    <div class="project-tags"><span class="tag">Python</span><span class="tag">Selenium</span><span class="tag">Make.com</span></div>
+                    <button class="expand-btn" onclick="toggleDetails(this)">View Details <i class="fas fa-chevron-down"></i></button>
+                    <div class="project-details">
+                        <div class="details-content">
+                            <div class="detail-section problem">
+                                <h4><i class="fas fa-exclamation-triangle"></i> The Problem</h4>
+                                <p>B2B consulting firm spending 15+ hours weekly on manual LinkedIn prospecting and email outreach.</p>
+                                <ul><li>Time-consuming manual data collection</li><li>Limited to 100 prospects/week</li><li>No systematic follow-up tracking</li><li>Only 8% response rate</li></ul>
+                            </div>
+                            <div class="detail-section solution">
+                                <h4><i class="fas fa-lightbulb"></i> Our Solution</h4>
+                                <ul><li>Python Selenium scraper for LinkedIn</li><li>Data enrichment with Hunter.io & Clearbit</li><li>Make.com automation workflows</li><li>Gmail API for personalized emails</li><li>Automated 3-email follow-up sequence</li></ul>
+                            </div>
+                            <div class="detail-section result">
+                                <h4><i class="fas fa-chart-line"></i> Results</h4>
+                                <ul><li>Time: 15 hrs/week → 30 min/week (97% reduction)</li><li>Outreach: 100 → 500 prospects/week (5x)</li><li>Response Rate: 8% → 23%</li><li>2-3 new clients/month from system</li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop" alt="E-commerce">
+                    <div class="project-overlay"><span class="view-details"><i class="fas fa-shopping-cart"></i> E-commerce</span></div>
+                </div>
+                <div class="project-content">
+                    <h3>E-commerce + WhatsApp Automation</h3>
+                    <p>Shopify store with complete order management & cart recovery</p>
+                    <div class="project-tags"><span class="tag">Shopify</span><span class="tag">WhatsApp API</span><span class="tag">Zapier</span></div>
+                    <button class="expand-btn" onclick="toggleDetails(this)">View Details <i class="fas fa-chevron-down"></i></button>
+                    <div class="project-details">
+                        <div class="details-content">
+                            <div class="detail-section problem">
+                                <h4><i class="fas fa-exclamation-triangle"></i> The Problem</h4>
+                                <p>35% sales loss due to manual processes, no abandoned cart recovery, poor customer communication.</p>
+                                <ul><li>Manual order confirmation (2-4 hours)</li><li>No shipping updates to customers</li><li>₹2-3L monthly abandoned cart loss</li><li>Constant "Where is my order?" inquiries</li></ul>
+                            </div>
+                            <div class="detail-section solution">
+                                <h4><i class="fas fa-lightbulb"></i> Our Solution</h4>
+                                <ul><li>Custom Shopify theme (mobile-first)</li><li>WhatsApp Business API integration</li><li>Zapier automation workflows</li><li>Abandoned cart recovery (1hr, 6hr, 24hr)</li><li>Auto-reply bot for FAQs</li></ul>
+                            </div>
+                            <div class="detail-section result">
+                                <h4><i class="fas fa-chart-line"></i> Results</h4>
+                                <ul><li>28% cart recovery (₹75K/month extra)</li><li>70% fewer support inquiries</li><li>Instant order processing</li><li>45% more repeat customers</li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&auto=format&fit=crop" alt="Real Estate CRM">
+                    <div class="project-overlay"><span class="view-details"><i class="fas fa-building"></i> Real Estate</span></div>
+                </div>
+                <div class="project-content">
+                    <h3>Real Estate CRM</h3>
+                    <p>Lead management system with 40% conversion increase</p>
+                    <div class="project-tags"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">MongoDB</span></div>
+                    <button class="expand-btn" onclick="toggleDetails(this)">View Details <i class="fas fa-chevron-down"></i></button>
+                    <div class="project-details">
+                        <div class="details-content">
+                            <div class="detail-section problem">
+                                <h4><i class="fas fa-exclamation-triangle"></i> The Problem</h4>
+                                <p>Leads falling through cracks, 12% conversion rate, no centralized database.</p>
+                                <ul><li>Manual follow-up system failing</li><li>Leads scattered across Excel, WhatsApp, emails</li><li>Agents forgetting hot leads</li><li>Only 12% inquiry to visit conversion</li></ul>
+                            </div>
+                            <div class="detail-section solution">
+                                <h4><i class="fas fa-lightbulb"></i> Our Solution</h4>
+                                <ul><li>React CRM dashboard with MongoDB</li><li>AI-based lead scoring (hot/warm/cold)</li><li>Automated follow-ups (SMS/WhatsApp/Email)</li><li>Property matching algorithm</li><li>Twilio integration for call reminders</li></ul>
+                            </div>
+                            <div class="detail-section result">
+                                <h4><i class="fas fa-chart-line"></i> Results</h4>
+                                <ul><li>Conversion: 12% → 40% (233% improvement)</li><li>Response time: 4 hrs → 3 min</li><li>₹45L additional revenue (6 months)</li><li>3x agent productivity</li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&auto=format&fit=crop" alt="Fitness App">
+                    <div class="project-overlay"><span class="view-details"><i class="fas fa-dumbbell"></i> Fitness</span></div>
+                </div>
+                <div class="project-content">
+                    <h3>Fitness Tracking Mobile App</h3>
+                    <p>Cross-platform app with 10K+ downloads in 3 months</p>
+                    <div class="project-tags"><span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">ML Kit</span></div>
+                    <button class="expand-btn" onclick="toggleDetails(this)">View Details <i class="fas fa-chevron-down"></i></button>
+                    <div class="project-details">
+                        <div class="details-content">
+                            <div class="detail-section problem">
+                                <h4><i class="fas fa-exclamation-triangle"></i> The Problem</h4>
+                                <p>Fitness startup needed iOS + Android app with limited budget, offline functionality, and wearable integration.</p>
+                                <ul><li>Dual platform development costly</li><li>Gym areas with poor connectivity</li><li>Need personalized workout recommendations</li><li>Social features for user retention</li></ul>
+                            </div>
+                            <div class="detail-section solution">
+                                <h4><i class="fas fa-lightbulb"></i> Our Solution</h4>
+                                <ul><li>Flutter (single codebase for iOS + Android)</li><li>Firebase backend with real-time sync</li><li>ML Kit for workout recommendations</li><li>Offline-first SQLite architecture</li><li>Social challenges & leaderboards</li></ul>
+                            </div>
+                            <div class="detail-section result">
+                                <h4><i class="fas fa-chart-line"></i> Results</h4>
+                                <ul><li>10K+ downloads in 3 months</li><li>68% Day-30 retention (industry avg: 25%)</li><li>4.7/5 rating on both stores</li><li>₹12L/month from premium subscriptions</li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&auto=format&fit=crop" alt="Email Platform">
+                    <div class="project-overlay"><span class="view-details"><i class="fas fa-envelope"></i> Email Marketing</span></div>
+                </div>
+                <div class="project-content">
+                    <h3>Email Marketing Platform</h3>
+                    <p>Advanced campaign automation with 85% open rate</p>
+                    <div class="project-tags"><span class="tag">Node.js</span><span class="tag">SendGrid</span><span class="tag">Redis</span></div>
+                    <button class="expand-btn" onclick="toggleDetails(this)">View Details <i class="fas fa-chevron-down"></i></button>
+                    <div class="project-details">
+                        <div class="details-content">
+                            <div class="detail-section problem">
+                                <h4><i class="fas fa-exclamation-triangle"></i> The Problem</h4>
+                                <p>Digital marketing agency managing 50+ clients needed scalable email automation with high deliverability.</p>
+                                <ul><li>Manual campaign setup for each client</li><li>Low deliverability rates</li><li>No behavioral tracking</li><li>Complex reporting requirements</li></ul>
+                            </div>
+                            <div class="detail-section solution">
+                                <h4><i class="fas fa-lightbulb"></i> Our Solution</h4>
+                                <ul><li>Node.js backend handling 500K emails/day</li><li>SendGrid integration (99% inbox rate)</li><li>Redis queue for scheduled emails</li><li>Behavioral tracking (opens, clicks, conversions)</li><li>AI-powered send time optimization</li></ul>
+                            </div>
+                            <div class="detail-section result">
+                                <h4><i class="fas fa-chart-line"></i> Results</h4>
+                                <ul><li>Open Rate: 85% (industry avg: 21%)</li><li>Click Rate: 34% (industry avg: 2.6%)</li><li>99% inbox deliverability</li><li>12x average ROI for clients</li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=800&auto=format&fit=crop" alt="Property Management">
+                    <div class="project-overlay"><span class="view-details"><i class="fas fa-building"></i> Property Mgmt</span></div>
+                </div>
+                <div class="project-content">
+                    <h3>Property Management Dashboard</h3>
+                    <p>Automated rent collection for 200+ units</p>
+                    <div class="project-tags"><span class="tag">Vue.js</span><span class="tag">Express</span><span class="tag">Stripe</span></div>
+                    <button class="expand-btn" onclick="toggleDetails(this)">View Details <i class="fas fa-chevron-down"></i></button>
+                    <div class="project-details">
+                        <div class="details-content">
+                            <div class="detail-section problem">
+                                <h4><i class="fas fa-exclamation-triangle"></i> The Problem</h4>
+                                <p>Property management company with 200+ units facing manual rent collection, 30% late payments, no centralized system.</p>
+                                <ul><li>Manual collection taking 5-7 days/month</li><li>30% tenants regularly late</li><li>No automated late fee calculation</li><li>Maintenance requests via phone calls</li></ul>
+                            </div>
+                            <div class="detail-section solution">
+                                <h4><i class="fas fa-lightbulb"></i> Our Solution</h4>
+                                <ul><li>Vue.js dashboard for owners & tenants</li><li>Stripe recurring payment automation</li><li>Auto-late fee calculation & notifications</li><li>Maintenance ticketing system</li><li>Lease management & renewal reminders</li></ul>
+                            </div>
+                            <div class="detail-section result">
+                                <h4><i class="fas fa-chart-line"></i> Results</h4>
+                                <ul><li>Collection: 5-7 days → Same day</li><li>Late payments: 30% → 8%</li><li>Admin time: 40 hrs → 5 hrs/month</li><li>25% improvement in cash flow</li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
-    <div id="project1" class="modal"><div class="modal-content"><div class="modal-header"><button class="modal-close" onclick="closeModal('project1')"><i class="fas fa-times"></i></button><h2>Automated Lead Generation System</h2><p>LinkedIn Automation & Email Outreach</p></div><div class="modal-body"><div class="modal-section problem"><h4><i class="fas fa-exclamation-triangle"></i> The Problem</h4><p>B2B consulting firm spending 15+ hours weekly on manual LinkedIn prospecting and email outreach.</p></div><div class="modal-section solution"><h4><i class="fas fa-lightbulb"></i> Our Solution</h4><ul><li>Python Selenium scraper for LinkedIn</li><li>Data enrichment with Hunter.io & Clearbit</li><li>Make.com automation workflows</li><li>Gmail API for personalized emails</li><li>Automated 3-email follow-up sequence</li></ul></div><div class="modal-section result"><h4><i class="fas fa-chart-line"></i> Results</h4><ul><li>Time: 15 hrs/week → 30 min/week (97% reduction)</li><li>Outreach: 100 → 500 prospects/week (5x)</li><li>Response Rate: 8% → 23%</li><li>2-3 new clients/month</li></ul></div></div></div></div>
-    <div id="project2" class="modal"><div class="modal-content"><div class="modal-header"><button class="modal-close" onclick="closeModal('project2')"><i class="fas fa-times"></i></button><h2>E-commerce + WhatsApp Automation</h2><p>Shopify Store Management</p></div><div class="modal-body"><div class="modal-section problem"><h4><i class="fas fa-exclamation-triangle"></i> The Problem</h4><p>35% sales loss due to manual processes, no abandoned cart recovery, poor customer communication.</p></div><div class="modal-section solution"><h4><i class="fas fa-lightbulb"></i> Our Solution</h4><ul><li>Custom Shopify theme</li><li>WhatsApp Business API integration</li><li>Zapier automation workflows</li><li>Abandoned cart recovery (1hr, 6hr, 24hr)</li><li>Auto-reply bot for FAQs</li></ul></div><div class="modal-section result"><h4><i class="fas fa-chart-line"></i> Results</h4><ul><li>28% cart recovery (₹75K/month)</li><li>70% fewer support inquiries</li><li>Instant order processing</li><li>45% more repeat customers</li></ul></div></div></div></div>
-    <div id="project3" class="modal"><div class="modal-content"><div class="modal-header"><button class="modal-close" onclick="closeModal('project3')"><i class="fas fa-times"></i></button><h2>Real Estate CRM</h2><p>Lead Management System</p></div><div class="modal-body"><div class="modal-section problem"><h4><i class="fas fa-exclamation-triangle"></i> The Problem</h4><p>Leads falling through cracks, 12% conversion rate, no centralized database.</p></div><div class="modal-section solution"><h4><i class="fas fa-lightbulb"></i> Our Solution</h4><ul><li>React CRM dashboard</li><li>AI-based lead scoring</li><li>Automated follow-ups (SMS/WhatsApp/Email)</li><li>Property matching algorithm</li><li>Twilio integration</li></ul></div><div class="modal-section result"><h4><i class="fas fa-chart-line"></i> Results</h4><ul><li>Conversion: 12% → 40%</li><li>Response time: 4 hrs → 3 min</li><li>₹45L additional revenue (6 months)</li><li>3x agent productivity</li></ul></div></div></div></div>
-    <div id="project4" class="modal"><div class="modal-content"><div class="modal-header"><button class="modal-close" onclick="closeModal('project4')"><i class="fas fa-times"></i></button><h2>Fitness Tracking Mobile App</h2><p>Cross-Platform Health Application</p></div><div class="modal-body"><div class="modal-section problem"><h4><i class="fas fa-exclamation-triangle"></i> The Problem</h4><p>Needed iOS + Android app with limited budget, offline functionality, wearable integration.</p></div><div class="modal-section solution"><h4><i class="fas fa-lightbulb"></i> Our Solution</h4><ul><li>Flutter (single codebase)</li><li>Firebase backend</li><li>ML Kit for workout recommendations</li><li>Offline-first architecture</li><li>Social features & challenges</li></ul></div><div class="modal-section result"><h4><i class="fas fa-chart-line"></i> Results</h4><ul><li>10K+ downloads (3 months)</li><li>68% Day-30 retention</li><li>4.7/5 rating</li><li>12L/month revenue</li></ul></div></div></div></div>
-    <div id="project5" class="modal"><div class="modal-content"><div class="modal-header"><button class="modal-close" onclick="closeModal('project5')"><i class="fas fa-times"></i></button><h2>Email Marketing Platform</h2><p>Advanced Campaign Automation</p></div><div class="modal-body"><div class="modal-section problem"><h4><i class="fas fa-exclamation-triangle"></i> The Problem</h4><p>Agency managing 50+ clients needed scalable email automation with high deliverability.</p></div><div class="modal-section solution"><h4><i class="fas fa-lightbulb"></i> Our Solution</h4><ul><li>Node.js backend (500K emails/day)</li><li>SendGrid integration (99% inbox)</li><li>Redis queue system</li><li>Behavioral tracking</li><li>AI-powered send time optimization</li></ul></div><div class="modal-section result"><h4><i class="fas fa-chart-line"></i> Results</h4><ul><li>Open Rate: 85% (avg: 21%)</li><li>Click Rate: 34% (avg: 2.6%)</li><li>99% deliverability</li><li>12x average ROI</li></ul></div></div></div></div>
-    <div id="project6" class="modal"><div class="modal-content"><div class="modal-header"><button class="modal-close" onclick="closeModal('project6')"><i class="fas fa-times"></i></button><h2>Property Management Dashboard</h2><p>Automated Rent Collection</p></div><div class="modal-body"><div class="modal-section problem"><h4><i class="fas fa-exclamation-triangle"></i> The Problem</h4><p>200+ units, manual rent collection (5-7 days), 30% late payments, no centralized system.</p></div><div class="modal-section solution"><h4><i class="fas fa-lightbulb"></i> Our Solution</h4><ul><li>Vue.js dashboard</li><li>Stripe recurring payments</li><li>Auto-late fee calculation</li><li>Maintenance ticketing</li><li>Lease management</li></ul></div><div class="modal-section result"><h4><i class="fas fa-chart-line"></i> Results</h4><ul><li>Collection: 5-7 days → Same day</li><li>Late payments: 30% → 8%</li><li>Admin time: 40 hrs → 5 hrs/month</li><li>25% better cash flow</li></ul></div></div></div></div>
-    <section class="process"><div class="section-header fade-in"><h2>How We Work</h2><p>Simple, transparent, results-focused</p></div><div class="process-grid"><div class="process-step fade-in"><div class="step-number">1</div><h3>Discovery</h3><p>Free consultation to understand your goals</p></div><div class="process-step fade-in"><div class="step-number">2</div><h3>Proposal</h3><p>Detailed plan with timeline & ROI</p></div><div class="process-step fade-in"><div class="step-number">3</div><h3>Development</h3><p>Agile development with weekly updates</p></div><div class="process-step fade-in"><div class="step-number">4</div><h3>Launch</h3><p>Deployment & 30-day support</p></div></div></section>
-    <section class="contact" id="contact"><div class="contact-box fade-in"><h2>Ready to Transform Your Business?</h2><p>Let's discuss how we can save you time and increase revenue</p><a href="mailto:techie.priyank15@gmail.com" class="email-link"><i class="fas fa-envelope"></i> techie.priyank15@gmail.com</a></div></section>
-    <footer><p>&copy; 2026 Priyank Gupta. All rights reserved.</p></footer>
+
+    <section class="process">
+        <div class="section-header fade-in">
+            <h2>How We Work</h2>
+            <p>Simple, transparent, results-focused</p>
+        </div>
+        <div class="process-grid">
+            <div class="process-step fade-in">
+                <div class="step-number">1</div>
+                <h3>Discovery</h3>
+                <p>Free consultation to understand your goals</p>
+            </div>
+            <div class="process-step fade-in">
+                <div class="step-number">2</div>
+                <h3>Proposal</h3>
+                <p>Detailed plan with timeline & ROI</p>
+            </div>
+            <div class="process-step fade-in">
+                <div class="step-number">3</div>
+                <h3>Development</h3>
+                <p>Agile development with weekly updates</p>
+            </div>
+            <div class="process-step fade-in">
+                <div class="step-number">4</div>
+                <h3>Launch</h3>
+                <p>Deployment & 30-day support</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="contact-box fade-in">
+            <h2>Ready to Transform Your Business?</h2>
+            <p>Let's discuss how we can save you time and increase revenue</p>
+            <a href="mailto:techie.priyank15@gmail.com" class="email-link"><i class="fas fa-envelope"></i> techie.priyank15@gmail.com</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Priyank Gupta. All rights reserved.</p>
+    </footer>
+
     <script>
-        window.addEventListener('scroll', () => { const navbar = document.getElementById('navbar'); if (window.scrollY > 50) { navbar.classList.add('scrolled'); } else { navbar.classList.remove('scrolled'); } });
-        const counters = document.querySelectorAll('.stat-number'); const speed = 200; const animateCounters = () => { counters.forEach(counter => { const target = +counter.getAttribute('data-target'); const count = +counter.innerText; const inc = target / speed; if (count < target) { counter.innerText = Math.ceil(count + inc); setTimeout(animateCounters, 20); } else { counter.innerText = target + (target === 98 ? '%' : target === 24 ? '' : '+'); } }); };
-        const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }; const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); if (entry.target.classList.contains('stat-card')) { animateCounters(); } } }); }, observerOptions); document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
-        function openModal(projectId) { document.getElementById(projectId).style.display = 'block'; document.body.style.overflow = 'hidden'; } function closeModal(projectId) { document.getElementById(projectId).style.display = 'none'; document.body.style.overflow = 'auto'; } window.onclick = function(event) { if (event.target.classList.contains('modal')) { event.target.style.display = 'none'; document.body.style.overflow = 'auto'; } }
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function (e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); });
+        window.addEventListener('scroll', () => { 
+            const navbar = document.getElementById('navbar'); 
+            if (window.scrollY > 50) { navbar.classList.add('scrolled'); } 
+            else { navbar.classList.remove('scrolled'); } 
+        });
+        
+        const counters = document.querySelectorAll('.stat-number'); 
+        const speed = 200; 
+        const animateCounters = () => { 
+            counters.forEach(counter => { 
+                const target = +counter.getAttribute('data-target'); 
+                const count = +counter.innerText; 
+                const inc = target / speed; 
+                if (count < target) { 
+                    counter.innerText = Math.ceil(count + inc); 
+                    setTimeout(animateCounters, 20); 
+                } else { 
+                    counter.innerText = target + (target === 98 ? '%' : target === 24 ? '/7' : '+'); 
+                } 
+            }); 
+        };
+        
+        const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }; 
+        const observer = new IntersectionObserver((entries) => { 
+            entries.forEach(entry => { 
+                if (entry.isIntersecting) { 
+                    entry.target.classList.add('visible'); 
+                    if (entry.target.classList.contains('stat-card')) { animateCounters(); } 
+                } 
+            }); 
+        }, observerOptions); 
+        document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+        
+        function toggleDetails(btn) {
+            const card = btn.closest('.project-card');
+            const details = card.querySelector('.project-details');
+            btn.classList.toggle('active');
+            details.classList.toggle('expanded');
+            if (details.classList.contains('expanded')) {
+                btn.innerHTML = 'Hide Details <i class="fas fa-chevron-up"></i>';
+            } else {
+                btn.innerHTML = 'View Details <i class="fas fa-chevron-down"></i>';
+            }
+        }
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => { 
+            anchor.addEventListener('click', function (e) { 
+                e.preventDefault(); 
+                const target = document.querySelector(this.getAttribute('href')); 
+                if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } 
+            }); 
+        });
     </script>
 </body>
 </html>
